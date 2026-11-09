@@ -22,18 +22,16 @@ public class studentRepositoryImpl implements studentRepository {
     @Override
     public void save(Student student) {
         String fullName = student.getFirstName() + " " + student.getLastName();
-
-        // Only inserting into columns that exist in your DB
-        String sql = "INSERT INTO students (full_name, email, age) VALUES (?, ?, ?)";
+        String selectSql = "INSERT INTO students (full_name, email, age) VALUES (?, ?, ?)";
 
         try (Connection conn = db.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(selectSql)) {
 
-            pstmt.setString(1, fullName);
-            pstmt.setString(2, student.getEmail());
-            pstmt.setInt(3, student.getAge());
+            ps.setString(1, fullName);
+            ps.setString(2, student.getEmail());
+            ps.setInt(3, student.getAge());
 
-            pstmt.executeUpdate();
+            ps.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException("Error saving student", e);
@@ -48,8 +46,8 @@ public class studentRepositoryImpl implements studentRepository {
         String sql = "SELECT id, full_name, email, age FROM students ORDER BY id";
 
         try (Connection conn = db.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Student student = new Student();
@@ -72,7 +70,7 @@ public class studentRepositoryImpl implements studentRepository {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error fetching students", e);
+            throw new RuntimeException( e.getMessage());
         }
 
         return students;
