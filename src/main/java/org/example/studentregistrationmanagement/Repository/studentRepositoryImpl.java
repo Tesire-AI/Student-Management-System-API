@@ -44,7 +44,7 @@ public class studentRepositoryImpl implements studentRepository {
     public List<Student> findAll() {
         List<Student> students = new ArrayList<>();
 
-        // Only selecting columns that exist in your DB
+
         String sql = "SELECT id, full_name, email, age FROM students ORDER BY id";
 
         try (Connection conn = db.getConnection();
@@ -55,15 +55,14 @@ public class studentRepositoryImpl implements studentRepository {
                 Student student = new Student();
                 student.setId(rs.getLong("id"));
 
-                // Split the full_name back into first and last for the HTML table
                 String fullName = rs.getString("full_name");
                 if (fullName != null && fullName.contains(" ")) {
-                    String[] nameParts = fullName.split(" ", 2); // split at the first space
+                    String[] nameParts = fullName.split(" ", 2);
                     student.setFirstName(nameParts[0]);
                     student.setLastName(nameParts[1]);
                 } else {
                     student.setFirstName(fullName != null ? fullName : "");
-                    student.setLastName(""); // fallback just in case
+                    student.setLastName("");
                 }
 
                 student.setEmail(rs.getString("email"));
