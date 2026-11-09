@@ -24,7 +24,7 @@ public class StudentController {
     @PostMapping("/register")
     public String registerStudent(Student student, Model model) {
         studentService.save(student);
-        //model.addAttribute("success", true);
+
         model.addAttribute("student", new Student());
         return "register";
     }
