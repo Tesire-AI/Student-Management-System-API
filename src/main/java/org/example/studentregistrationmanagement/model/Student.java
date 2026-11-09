@@ -1,4 +1,4 @@
-package model;
+package org.example.studentregistrationmanagement.model;
 
 public class Student {
     private String firstName;
@@ -11,6 +11,10 @@ public class Student {
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+    }
+
+    public Student() {
+
     }
 
     public String getFirstName() {
